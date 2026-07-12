@@ -60,16 +60,18 @@ button:disabled {
 }
 
 .hero {
-  align-items: stretch;
-  background: linear-gradient(135deg, #ffffff 0%, #edf8f7 58%, #eef6ff 100%);
+  align-items: center;
+  background: radial-gradient(circle at 72% 34%, rgba(17, 124, 122, 0.16), transparent 34%),
+    linear-gradient(135deg, #ffffff 0%, #edf8f7 55%, #eef6ff 100%);
   border: 1px solid #dbe8ef;
   border-radius: 18px;
   display: grid;
-  gap: 24px;
-  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+  gap: 28px;
+  grid-template-columns: minmax(0, 0.78fr) minmax(420px, 1.22fr);
   margin-bottom: 22px;
+  min-height: 376px;
   overflow: hidden;
-  padding: 34px;
+  padding: 38px 46px 34px;
   position: relative;
 }
 
@@ -85,7 +87,7 @@ button:disabled {
 
 .heroContent {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .eyebrow {
@@ -98,27 +100,19 @@ button:disabled {
 }
 
 .hero h1 {
-  font-size: 48px;
+  font-size: 72px;
   line-height: 1.05;
-  margin: 0 0 14px;
-  max-width: 720px;
+  margin: 0 0 18px;
+  max-width: 640px;
 }
 
 .hero p {
   color: #536273;
-  font-size: 17px;
+  font-size: 23px;
   margin: 0;
-  max-width: 700px;
+  max-width: 620px;
 }
 
-.heroBadges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 22px;
-}
-
-.heroBadges span,
 .fileName,
 .chatStatus {
   background: #ffffff;
@@ -131,79 +125,21 @@ button:disabled {
   padding: 7px 11px;
 }
 
-.heroVisual {
+.heroIllustration {
   align-items: center;
-  display: grid;
-  min-height: 210px;
-  position: relative;
-  z-index: 1;
-}
-
-.pulseCard {
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid #dbe8ef;
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(20, 56, 84, 0.12);
-  padding: 24px;
-}
-
-.pulseCard strong {
-  display: block;
-  font-size: 24px;
-  margin-bottom: 8px;
-}
-
-.pulseCard p {
-  font-size: 14px;
-}
-
-.pulseDot {
-  background: #48b58e;
-  border-radius: 999px;
-  box-shadow: 0 0 0 8px rgba(72, 181, 142, 0.14);
-  display: block;
-  height: 14px;
-  margin-bottom: 22px;
-  width: 14px;
-}
-
-.miniChart {
-  align-items: end;
-  background: #ffffff;
-  border: 1px solid #dbe8ef;
-  border-radius: 12px;
-  bottom: 18px;
   display: flex;
-  gap: 8px;
-  padding: 12px;
-  position: absolute;
-  right: 18px;
+  justify-content: flex-end;
+  min-height: 320px;
+  position: relative;
+  z-index: 2;
 }
 
-.miniChart span {
-  background: #dcefff;
-  border-radius: 999px;
+.heroIllustration img {
+  filter: drop-shadow(0 22px 28px rgba(20, 56, 84, 0.14));
   display: block;
-  width: 12px;
-}
-
-.miniChart span:nth-child(1) {
-  height: 28px;
-}
-
-.miniChart span:nth-child(2) {
-  background: #bce7dc;
-  height: 46px;
-}
-
-.miniChart span:nth-child(3) {
-  background: #ffd8a8;
-  height: 34px;
-}
-
-.miniChart span:nth-child(4) {
-  background: #ffc6c0;
-  height: 56px;
+  height: auto;
+  max-width: 660px;
+  width: 100%;
 }
 
 .sectionHeader {
@@ -356,10 +292,6 @@ button:disabled {
 .panel {
   margin-bottom: 16px;
   padding: 18px;
-}
-
-.previewPanel {
-  margin-top: 16px;
 }
 
 pre {
@@ -606,8 +538,25 @@ th {
     grid-template-columns: 1fr;
   }
 
+  .hero {
+    min-height: auto;
+  }
+
   .hero h1 {
-    font-size: 40px;
+    font-size: 52px;
+  }
+
+  .hero p {
+    font-size: 21px;
+  }
+
+  .heroIllustration {
+    justify-content: center;
+    min-height: 250px;
+  }
+
+  .heroIllustration img {
+    max-width: 520px;
   }
 
   .stepGrid,
@@ -615,9 +564,6 @@ th {
     grid-template-columns: 1fr;
   }
 
-  .heroVisual {
-    min-height: 180px;
-  }
 }
 
 @media (max-width: 620px) {
@@ -627,11 +573,24 @@ th {
 
   .hero {
     border-radius: 14px;
-    padding: 22px;
+    gap: 20px;
+    padding: 24px;
   }
 
   .hero h1 {
-    font-size: 32px;
+    font-size: 40px;
+  }
+
+  .hero p {
+    font-size: 18px;
+  }
+
+  .heroIllustration {
+    min-height: 210px;
+  }
+
+  .heroIllustration img {
+    max-width: 350px;
   }
 
   .dropZone,
@@ -647,9 +606,5 @@ th {
 
   .message {
     max-width: 100%;
-  }
-
-  .miniChart {
-    display: none;
   }
 }

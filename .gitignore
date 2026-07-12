@@ -93,6 +93,9 @@ cython_debug/
 .DS_Store
 Thumbs.db
 
+# Accidental root-level npm lockfile; frontend/package-lock.json is tracked.
+/package-lock.json
+
 # Environment variables
 .env
 .env.*
