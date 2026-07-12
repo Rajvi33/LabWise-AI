@@ -1,6 +1,6 @@
-# AI Health Report Assistant
+# LabWise AI
 
-AI Health Report Assistant is a simple MVP that helps users upload a blood report PDF, extract lab values, and understand which values appear normal, low, high, or unknown based on the reference ranges printed in the report.
+LabWise AI is a simple MVP that helps users upload a blood report PDF, extract lab values, and understand which values appear normal, low, high, or unknown based on the reference ranges printed in the report.
 
 It is designed to help diagnose and monitor diseases using patient data in an educational, safety-aware workflow.
 
