@@ -2,6 +2,8 @@
 
 AI Health Report Assistant is a simple MVP that helps users upload a blood report PDF, extract lab values, and understand which values appear normal, low, high, or unknown based on the reference ranges printed in the report.
 
+It is designed to help diagnose and monitor diseases using patient data in an educational, safety-aware workflow.
+
 The app includes a report-aware chatbot for educational questions about the uploaded report. It does not diagnose, prescribe medicine, suggest doses, or tell users to start or stop medicine.
 
 **Medical safety disclaimer:** This is educational information only and not a medical diagnosis. Please consult a qualified healthcare professional for medical advice.
