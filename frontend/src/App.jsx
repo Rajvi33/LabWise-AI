@@ -10,7 +10,6 @@ const DISCLAIMER =
 export default function App() {
   const [file, setFile] = useState(null);
   const [reportId, setReportId] = useState("");
-  const [preview, setPreview] = useState("");
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState("");
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -36,7 +35,6 @@ export default function App() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.detail || "Upload failed.");
       setReportId(data.report_id);
-      setPreview(data.text_preview);
     } catch (event) {
       setError(event.message);
     } finally {
@@ -70,30 +68,11 @@ export default function App() {
     <main className="appShell">
       <section className="hero">
         <div className="heroContent">
-          <p className="eyebrow">AI-assisted lab report education</p>
-          <h1>AI Health Report Assistant</h1>
-          <p>
-            Upload a blood report PDF, review extracted lab values in a clean dashboard, and ask report-aware questions
-            without replacing medical advice.
-          </p>
-          <div className="heroBadges">
-            <span>PDF analysis</span>
-            <span>Safe explanations</span>
-            <span>Report chat</span>
-          </div>
+          <h1>Labwise AI</h1>
+          <p>Understand your blood report in minutes.</p>
         </div>
-        <div className="heroVisual" aria-hidden="true">
-          <div className="pulseCard">
-            <span className="pulseDot"></span>
-            <strong>Lab AI</strong>
-            <p>Values, ranges, explanations</p>
-          </div>
-          <div className="miniChart">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+        <div className="heroIllustration" aria-hidden="true">
+          <img src="/labwise-hero.svg" alt="" />
         </div>
       </section>
 
@@ -110,16 +89,6 @@ export default function App() {
             uploadLoading={uploadLoading}
             analyzeLoading={analyzeLoading}
           />
-
-          {preview && (
-            <section className="panel previewPanel">
-              <div className="sectionHeader compact">
-                <p className="eyebrow">Extracted Text</p>
-                <h2>Text preview</h2>
-              </div>
-              <pre>{preview}</pre>
-            </section>
-          )}
         </div>
 
         <ChatBox reportId={reportId} />
