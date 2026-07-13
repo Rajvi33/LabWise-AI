@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 export default function ChatBox({ reportId }) {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([
@@ -24,7 +26,7 @@ export default function ChatBox({ reportId }) {
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8000/chat/${reportId}`, {
+      const response = await fetch(`${API_BASE_URL}/chat/${reportId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: trimmed }),

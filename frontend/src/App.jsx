@@ -4,6 +4,8 @@ import HowItWorks from "./components/HowItWorks.jsx";
 import ResultsDashboard from "./components/ResultsDashboard.jsx";
 import UploadCard from "./components/UploadCard.jsx";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 const DISCLAIMER =
   "This is educational information only and not a medical diagnosis. Please consult a qualified healthcare professional for medical advice.";
 
@@ -28,7 +30,7 @@ export default function App() {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8000/upload-report", {
+      const response = await fetch(`${API_BASE_URL}/upload-report`, {
         method: "POST",
         body: formData,
       });
@@ -51,7 +53,7 @@ export default function App() {
     setError("");
     setAnalyzeLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/analyze-report/${reportId}`, {
+      const response = await fetch(`${API_BASE_URL}/analyze-report/${reportId}`, {
         method: "POST",
       });
       const data = await response.json();
