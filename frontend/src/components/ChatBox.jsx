@@ -1,21 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
-export default function ChatBox({ reportId }) {
+export default function ChatBox({ reportId, labels }) {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "Hi, I can help explain the uploaded blood report in simple educational language. Upload and analyze a PDF, then ask about values, reference ranges, or doctor discussion points.",
+      text: labels.chatWelcome,
     },
   ]);
   const [loading, setLoading] = useState(false);
-  const quickQuestions = [
-    "Which values are abnormal?",
-    "What should I ask my doctor?",
-    "Is my cholesterol normal?",
-  ];
+  const quickQuestions = labels.quickQuestions;
+
+  useEffect(() => {
+    setMessages((current) => {
+      if (current.length === 1 && current[0].role === "assistant") {
+        return [{ role: "assistant", text: labels.chatWelcome }];
+      }
+      return current;
+    });
+  }, [labels.chatWelcome]);
 
   async function askQuestion(nextQuestion) {
     const trimmed = nextQuestion.trim();
@@ -50,10 +55,12 @@ export default function ChatBox({ reportId }) {
     <section className="panel chatPanel">
       <div className="chatHeader">
         <div>
-          <p className="eyebrow">Report Chat</p>
-          <h2>Ask the assistant</h2>
+          <p className="eyebrow">{labels.reportChat}</p>
+          <h2>{labels.askAssistant}</h2>
         </div>
-        <span className={reportId ? "chatStatus ready" : "chatStatus"}>{reportId ? "Ready" : "Upload first"}</span>
+        <span className={reportId ? "chatStatus ready" : "chatStatus"}>
+          {reportId ? labels.ready : labels.uploadFirst}
+        </span>
       </div>
       <div className="quickQuestions">
         {quickQuestions.map((item) => (
@@ -73,11 +80,11 @@ export default function ChatBox({ reportId }) {
         <input
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
-          placeholder="Why is my hemoglobin low?"
+          placeholder={labels.chatPlaceholder}
           disabled={!reportId || loading}
         />
         <button type="submit" disabled={!reportId || loading}>
-          {loading ? "Sending..." : "Send"}
+          {loading ? labels.sending : labels.send}
         </button>
       </form>
     </section>

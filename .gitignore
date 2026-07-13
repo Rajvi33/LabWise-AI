@@ -99,6 +99,7 @@ Thumbs.db
 # Environment variables
 .env
 .env.*
+frontend/.env
 !.env.example
 
 # Model weights / checkpoints (large files)

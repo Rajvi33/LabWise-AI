@@ -1,29 +1,17 @@
 import React from "react";
 
-const steps = [
-  {
-    title: "Upload Report",
-    text: "Add a blood report PDF from your device.",
-    icon: "01",
-  },
-  {
-    title: "Extract Lab Values",
-    text: "The backend reads the PDF and organizes test values.",
-    icon: "02",
-  },
-  {
-    title: "Ask Questions",
-    text: "Chat about the uploaded report in simple educational language.",
-    icon: "03",
-  },
-];
+export default function HowItWorks({ labels }) {
+  const steps = labels.steps.map(([title, text], index) => ({
+    title,
+    text,
+    icon: String(index + 1).padStart(2, "0"),
+  }));
 
-export default function HowItWorks() {
   return (
     <section className="howItWorks">
       <div className="sectionHeader">
-        <p className="eyebrow">Workflow</p>
-        <h2>How it works</h2>
+        <p className="eyebrow">{labels.workflowEyebrow}</p>
+        <h2>{labels.howItWorks}</h2>
       </div>
       <div className="stepGrid">
         {steps.map((step) => (

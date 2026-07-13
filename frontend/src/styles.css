@@ -14,7 +14,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -54,9 +55,108 @@ button:disabled {
 }
 
 .appShell {
+  --app-bg: #f5f8fb;
+  --surface: #ffffff;
+  --surface-soft: #f5f8fb;
+  --text: #172033;
+  --muted-text: #536273;
+  --border: #dbe8ef;
+  background: var(--app-bg);
+  color: var(--text);
   margin: 0 auto;
   max-width: 1220px;
-  padding: 28px 18px 34px;
+  min-height: 100vh;
+  padding: 18px 18px 34px;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.appShell.darkTheme {
+  --app-bg: #111827;
+  --surface: #172033;
+  --surface-soft: #1f2d3f;
+  --text: #eef6ff;
+  --muted-text: #c8d7e4;
+  --border: #324255;
+}
+
+.appHeader {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+}
+
+.headerControls {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.authError {
+  background: #fff0ef;
+  border: 1px solid #f2bbb6;
+  border-radius: 10px;
+  color: #9a2c24;
+  font-size: 13px;
+  font-weight: 800;
+  margin: -6px 0 14px auto;
+  max-width: 640px;
+  padding: 10px 12px;
+}
+
+.loginButton,
+.themeToggle,
+.languageControl select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-height: 40px;
+}
+
+.loginButton,
+.themeToggle {
+  padding: 0 14px;
+}
+
+.userBadge {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 800;
+  max-width: 190px;
+  overflow: hidden;
+  padding: 8px 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.themeToggle {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.themeToggle:hover:not(:disabled) {
+  background: var(--surface-soft);
+  box-shadow: 0 10px 22px rgba(31, 73, 103, 0.1);
+}
+
+.languageControl select {
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 800;
+  padding: 0 34px 0 12px;
+}
+
+.srOnly {
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
 }
 
 .hero {
@@ -73,6 +173,44 @@ button:disabled {
   overflow: hidden;
   padding: 38px 46px 34px;
   position: relative;
+}
+
+.darkTheme .hero,
+.darkTheme .stepCard,
+.darkTheme .metricCard,
+.darkTheme .panel,
+.darkTheme .uploadCard,
+.darkTheme .emptyDashboard,
+.darkTheme .breakdownCard {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.darkTheme .hero {
+  background: radial-gradient(circle at 72% 34%, rgba(72, 181, 142, 0.16), transparent 34%),
+    linear-gradient(135deg, #172033 0%, #152b2f 55%, #18263a 100%);
+}
+
+.darkTheme .hero p,
+.darkTheme .stepCard p,
+.darkTheme .metricCard p,
+.darkTheme .muted,
+.darkTheme .summaryList,
+.darkTheme .summaryNote,
+.darkTheme .chartLegend span,
+.darkTheme .emptyDashboard,
+.darkTheme .dropZone p {
+  color: var(--muted-text);
+}
+
+.darkTheme .hero h1,
+.darkTheme .sectionHeader h2,
+.darkTheme .emptyDashboard h2,
+.darkTheme .panel h3,
+.darkTheme .chatHeader h2,
+.darkTheme .summaryGroup h4,
+.darkTheme .donutTotal {
+  color: var(--text);
 }
 
 .hero::before {
@@ -753,6 +891,31 @@ th {
 @media (max-width: 620px) {
   .appShell {
     padding: 16px 12px 24px;
+  }
+
+  .appHeader {
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .headerControls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .loginButton,
+  .themeToggle,
+  .languageControl select {
+    justify-content: center;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 100%;
+  }
+
+  .userBadge {
+    grid-column: 1 / -1;
+    max-width: none;
+    text-align: center;
   }
 
   .hero {
