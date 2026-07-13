@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import ResultsTable from "./ResultsTable.jsx";
 
-export default function ResultsDashboard({ analysis }) {
+export default function ResultsDashboard({ analysis, labels }) {
   const chartRef = useRef(null);
   const [tooltip, setTooltip] = useState(null);
   const normalValues = analysis?.normal_values || [];
@@ -35,59 +35,59 @@ export default function ResultsDashboard({ analysis }) {
   return (
     <section className="dashboard">
       <div className="sectionHeader">
-        <p className="eyebrow">Analysis</p>
-        <h2>Results dashboard</h2>
+        <p className="eyebrow">{labels.analysis}</p>
+        <h2>{labels.resultsDashboard}</h2>
       </div>
 
       <div className="dashboardOverview">
         <div className="metricGrid">
           <article className="metricCard normalMetric">
-            <span>Normal</span>
+            <span>{labels.normal}</span>
             <strong>{normalCount}</strong>
-            <p>Within listed range</p>
+            <p>{labels.withinRange}</p>
           </article>
           <article className="metricCard abnormalMetric">
-            <span>Abnormal</span>
+            <span>{labels.abnormal}</span>
             <strong>{abnormalCount}</strong>
-            <p>Low, high, unknown, or critical</p>
+            <p>{labels.abnormalDescription}</p>
           </article>
           <article className="metricCard totalMetric">
-            <span>Total Tests</span>
+            <span>{labels.totalTests}</span>
             <strong>{totalCount}</strong>
-            <p>Extracted from report</p>
+            <p>{labels.extractedFromReport}</p>
           </article>
         </div>
 
-        <aside className="breakdownCard" aria-label="Report Breakdown">
-          <h3>Report Breakdown</h3>
+        <aside className="breakdownCard" aria-label={labels.reportBreakdown}>
+          <h3>{labels.reportBreakdown}</h3>
           <div className="donutChart" ref={chartRef}>
             <svg className="donutSvg" viewBox="0 0 120 120" aria-hidden="true">
               <circle className="donutTrack" cx="60" cy="60" r="42" />
               {totalCount > 0 && (
                 <>
                   <circle
-                    className={`donutSegment normalSegment ${tooltip?.label === "Normal" ? "active" : ""}`}
+                    className={`donutSegment normalSegment ${tooltip?.label === labels.normal ? "active" : ""}`}
                     cx="60"
                     cy="60"
                     r="42"
                     pathLength="100"
                     strokeDasharray={`${normalPercent} ${100 - normalPercent}`}
-                    onPointerEnter={(event) => showTooltip(event, "Normal", normalCount)}
-                    onPointerMove={(event) => showTooltip(event, "Normal", normalCount)}
-                    onPointerDown={(event) => showTooltip(event, "Normal", normalCount)}
+                    onPointerEnter={(event) => showTooltip(event, labels.normal, normalCount)}
+                    onPointerMove={(event) => showTooltip(event, labels.normal, normalCount)}
+                    onPointerDown={(event) => showTooltip(event, labels.normal, normalCount)}
                     onPointerLeave={hideTooltip}
                   />
                   <circle
-                    className={`donutSegment abnormalSegment ${tooltip?.label === "Abnormal" ? "active" : ""}`}
+                    className={`donutSegment abnormalSegment ${tooltip?.label === labels.abnormal ? "active" : ""}`}
                     cx="60"
                     cy="60"
                     r="42"
                     pathLength="100"
                     strokeDasharray={`${abnormalPercent} ${100 - abnormalPercent}`}
                     strokeDashoffset={-normalPercent}
-                    onPointerEnter={(event) => showTooltip(event, "Abnormal", abnormalCount)}
-                    onPointerMove={(event) => showTooltip(event, "Abnormal", abnormalCount)}
-                    onPointerDown={(event) => showTooltip(event, "Abnormal", abnormalCount)}
+                    onPointerEnter={(event) => showTooltip(event, labels.abnormal, abnormalCount)}
+                    onPointerMove={(event) => showTooltip(event, labels.abnormal, abnormalCount)}
+                    onPointerDown={(event) => showTooltip(event, labels.abnormal, abnormalCount)}
                     onPointerLeave={hideTooltip}
                   />
                 </>
@@ -103,63 +103,69 @@ export default function ResultsDashboard({ analysis }) {
           <div className="chartLegend">
             <span>
               <i className="legendDot normalDot"></i>
-              Normal {normalCount}
+              {labels.normal} {normalCount}
             </span>
             <span>
               <i className="legendDot abnormalDot"></i>
-              Abnormal {abnormalCount}
+              {labels.abnormal} {abnormalCount}
             </span>
           </div>
         </aside>
       </div>
 
       <section className="panel summaryPanel">
-        <h3>Summary of Analysis</h3>
+        <h3>{labels.summaryOfAnalysis}</h3>
 
         <div className="summaryGroup reviewGroup">
-          <h4>Needs closer review</h4>
+          <h4>{labels.needsReview}</h4>
           {reviewHighlights.length > 0 ? (
             <ul className="summaryList">
               {reviewHighlights.map((item, index) => (
                 <li key={`review-${item.test_name}-${index}`}>
-                  {item.test_name} is marked {formatStatus(item.status)} at {formatValue(item)}, compared with the
-                  listed range of {formatRange(item.reference_range)}.
+                  {labels.markedTemplate({
+                    testName: item.test_name,
+                    status: formatStatus(item.status),
+                    value: formatValue(item),
+                    range: formatRange(item.reference_range),
+                  })}
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="muted">No extracted values were flagged for closer review based on the listed reference ranges.</p>
+            <p className="muted">{labels.noReview}</p>
           )}
         </div>
 
         <div className="summaryGroup goodGroup">
-          <h4>Looks good</h4>
+          <h4>{labels.looksGood}</h4>
           {normalHighlights.length > 0 ? (
             <ul className="summaryList">
               {normalHighlights.map((item, index) => (
                 <li key={`normal-${item.test_name}-${index}`}>
-                  {item.test_name} appears within the listed range at {formatValue(item)}.
+                  {labels.normalTemplate({
+                    testName: item.test_name,
+                    value: formatValue(item),
+                  })}
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="muted">No clearly normal values were detected from the extracted results.</p>
+            <p className="muted">{labels.noNormal}</p>
           )}
         </div>
 
-        <p className="summaryNote">
-          Review the lab values table below for full details and discuss flagged results with a healthcare professional.
-        </p>
+        <p className="summaryNote">{labels.summaryNote}</p>
       </section>
 
       <ResultsTable
-        title="Lab Values"
+        title={labels.labValues}
         values={allValues}
-        emptyText="No lab values were extracted yet."
+        emptyText={labels.noLabValues}
+        labels={labels}
       />
 
       <section className="panel">
-        <h3>Doctor Discussion Points</h3>
+        <h3>{labels.doctorPoints}</h3>
         <ul className="discussionList">
           {(analysis.doctor_discussion_points || []).map((point, index) => (
             <li key={index}>{point}</li>

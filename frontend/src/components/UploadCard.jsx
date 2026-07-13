@@ -1,6 +1,15 @@
 import React, { useRef, useState } from "react";
 
-export default function UploadCard({ file, onFileSelect, onUpload, onAnalyze, reportReady, uploadLoading, analyzeLoading }) {
+export default function UploadCard({
+  file,
+  onFileSelect,
+  onUpload,
+  onAnalyze,
+  reportReady,
+  uploadLoading,
+  analyzeLoading,
+  labels,
+}) {
   const inputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
 
@@ -40,18 +49,18 @@ export default function UploadCard({ file, onFileSelect, onUpload, onAnalyze, re
         />
         <div className="uploadIcon">+</div>
         <div>
-          <h2>Upload blood report PDF</h2>
-          <p>Drag and drop your report here, or click to browse.</p>
-          <span className="fileName">{file ? file.name : "PDF files only"}</span>
+          <h2>{labels.uploadTitle}</h2>
+          <p>{labels.uploadHelp}</p>
+          <span className="fileName">{file ? file.name : labels.pdfOnly}</span>
         </div>
       </div>
 
       <div className="uploadActions">
         <button onClick={onUpload} disabled={!file || uploadLoading || analyzeLoading}>
-          {uploadLoading ? "Uploading..." : "Upload Report"}
+          {uploadLoading ? labels.uploading : labels.uploadReport}
         </button>
         <button className="secondary" onClick={onAnalyze} disabled={!reportReady || uploadLoading || analyzeLoading}>
-          {analyzeLoading ? "Analyzing..." : "Analyze Report"}
+          {analyzeLoading ? labels.analyzing : labels.analyzeReport}
         </button>
       </div>
     </section>

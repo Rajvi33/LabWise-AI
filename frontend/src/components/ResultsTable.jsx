@@ -1,6 +1,8 @@
 import React from "react";
 
-export default function ResultsTable({ title, values, emptyText }) {
+export default function ResultsTable({ title, values, emptyText, labels }) {
+  const headers = labels?.tableHeaders || ["Test", "Value", "Reference Range", "Status", "Explanation"];
+
   return (
     <section className="panel tablePanel">
       <h3>{title}</h3>
@@ -11,11 +13,9 @@ export default function ResultsTable({ title, values, emptyText }) {
           <table>
             <thead>
               <tr>
-                <th>Test</th>
-                <th>Value</th>
-                <th>Reference Range</th>
-                <th>Status</th>
-                <th>Explanation</th>
+                {headers.map((header) => (
+                  <th key={header}>{header}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
