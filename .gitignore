@@ -92,6 +92,7 @@ cython_debug/
 # OS-specific files
 .DS_Store
 Thumbs.db
+/LABWISE.pages
 
 # Accidental root-level npm lockfile; frontend/package-lock.json is tracked.
 /package-lock.json
