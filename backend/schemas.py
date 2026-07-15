@@ -1,6 +1,6 @@
-from typing import Literal
+from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 SAFETY_DISCLAIMER = (
@@ -40,6 +40,12 @@ class UploadResponse(BaseModel):
 
 class ChatRequest(BaseModel):
     question: str
+    lab_results: list[dict[str, Any]] = Field(default_factory=list, alias="labResults")
+    summary: dict[str, Any] | str | None = None
+    language: str = "auto"
+    has_report: bool = Field(default=False, alias="hasReport")
+
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class ChatResponse(BaseModel):
