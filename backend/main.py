@@ -1,10 +1,13 @@
 from pathlib import Path
 from uuid import uuid4
+import logging
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
-from .chatbot import answer_question
+from .chatbot import GeminiChatError, answer_question, answer_report_question
 from .health_agents import analyze_report_text
 from .llm_client import LLMClient
 from .report_parser import ReportParsingError, extract_text_from_pdf
@@ -14,6 +17,7 @@ from .schemas import AnalysisResult, ChatRequest, ChatResponse, UploadResponse
 BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AI Health Report Assistant")
 app.add_middleware(
@@ -25,6 +29,12 @@ app.add_middleware(
 
 llm_client = LLMClient()
 REPORTS: dict[str, dict[str, object]] = {}
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc: RequestValidationError) -> JSONResponse:
+    logger.warning("Invalid request body for %s: %s", request.url.path, exc.errors())
+    return JSONResponse(status_code=422, content={"detail": "Invalid request body."})
 
 
 @app.get("/health")
@@ -75,4 +85,21 @@ def chat(report_id: str, request: ChatRequest) -> ChatResponse:
         analysis if isinstance(analysis, AnalysisResult) else None,
         llm_client,
     )
+    return ChatResponse(answer=answer)
+
+
+@app.post("/api/chat", response_model=ChatResponse)
+def api_chat(request: ChatRequest) -> ChatResponse:
+    try:
+        answer = answer_report_question(
+            request.question,
+            request.lab_results,
+            request.summary,
+            request.language,
+            request.has_report,
+        )
+    except GeminiChatError as exc:
+        logger.error("POST /api/chat failed: %s", exc)
+        raise HTTPException(status_code=503, detail="AI assistant is not available right now.") from exc
+
     return ChatResponse(answer=answer)

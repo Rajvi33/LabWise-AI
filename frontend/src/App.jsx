@@ -511,7 +511,7 @@ export default function App() {
           />
         </div>
 
-        <ChatBox reportId={reportId} labels={t} />
+        <ChatBox reportId={reportId} analysis={analysis} language={language} labels={t} />
       </div>
 
       {(uploadLoading || analyzeLoading) && (
